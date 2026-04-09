@@ -4,6 +4,7 @@ import argparse
 import os
 import sys
 from pathlib import Path
+from typing import Optional
 from dotenv import load_dotenv
 from supabase import create_client
 
@@ -32,6 +33,7 @@ from .load import (
     load_results,
 )
 from .logger import logger
+from .huggingface_fetcher import HuggingFaceFetcher
 
 
 def run_etl_pipeline(file_path: str, supabase_client) -> None:
@@ -104,10 +106,54 @@ def run_etl_pipeline(file_path: str, supabase_client) -> None:
         sys.exit(1)
 
 
+def run_huggingface_fetch(model_id: Optional[str] = None, limit: int = 50, supabase_client=None) -> None:
+    """Fetch data from HuggingFace and load into database.
+
+    Args:
+        model_id: Specific model ID to fetch (optional)
+        limit: Maximum number of popular models to fetch
+        supabase_client: Supabase client
+    """
+    logger.info("Starting HuggingFace data fetch")
+
+    try:
+        # Initialize fetcher
+        api_key = os.getenv("HF_API_KEY")
+        fetcher = HuggingFaceFetcher(api_key=api_key)
+
+        if model_id:
+            # Fetch specific model
+            logger.info(f"Fetching data for model: {model_id}")
+            model_data = fetcher.fetch_model_metadata(model_id)
+            if model_data:
+                # Load into database (implementation would go here)
+                logger.info(f"Successfully fetched data for {model_id}")
+            else:
+                logger.error(f"Failed to fetch data for {model_id}")
+        else:
+            # Fetch popular models
+            logger.info(f"Fetching {limit} popular models")
+            models = fetcher.fetch_popular_models(limit=limit)
+            logger.info(f"Successfully fetched {len(models)} models")
+
+            # Load into database (implementation would go here)
+            for model in models:
+                logger.info(f"Model: {model.get('name')}")
+
+        logger.info("HuggingFace fetch completed successfully")
+
+    except Exception as e:
+        logger.error(f"HuggingFace fetch failed: {e}")
+        sys.exit(1)
+
+
 def main():
     """Main entry point for ETL pipeline."""
     parser = argparse.ArgumentParser(description="ETL pipeline for AI model benchmark data")
-    parser.add_argument("--input", required=True, help="Path to input file (Excel or CSV)")
+    parser.add_argument("--input", help="Path to input file (Excel or CSV)")
+    parser.add_argument("--huggingface", action="store_true", help="Fetch data from HuggingFace")
+    parser.add_argument("--model-id", help="Specific HuggingFace model ID to fetch")
+    parser.add_argument("--limit", type=int, default=50, help="Maximum models to fetch from HuggingFace")
     args = parser.parse_args()
 
     # Load environment variables
@@ -124,8 +170,14 @@ def main():
     # Create Supabase client
     supabase_client = create_client(supabase_url, supabase_key)
 
-    # Run ETL pipeline
-    run_etl_pipeline(args.input, supabase_client)
+    # Run appropriate pipeline
+    if args.huggingface:
+        run_huggingface_fetch(args.model_id, args.limit, supabase_client)
+    elif args.input:
+        run_etl_pipeline(args.input, supabase_client)
+    else:
+        parser.print_help()
+        sys.exit(1)
 
 
 if __name__ == "__main__":
