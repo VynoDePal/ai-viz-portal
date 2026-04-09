@@ -1,0 +1,3 @@
+name,organization,category,parameters,release_date,description,github_url,huggingface_url
+GPT-4,OpenAI,LLM,1760000000000,2023-03-14,Most capable GPT-4 model,https://github.com/openai,https://huggingface.co/openai/gpt-4
+Claude 3 Opus,Anthropic,LLM,400000000000,2024-03-04,Most capable Claude model,https://github.com/anthropics,https://huggingface.co/anthropic/claude-3-opus

@@ -1,0 +1,4 @@
+name,description,type,unit
+MMLU,Massive Multitask Language Understanding,knowledge,accuracy
+HumanEval,Python coding problems,code,pass@1
+GSM8K,Grade school math problems,reasoning,accuracy

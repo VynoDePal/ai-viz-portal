@@ -1,0 +1,4 @@
+model_name,benchmark_name,score,date_recorded,source
+GPT-4,MMLU,86.4,2024-01-01,OpenAI
+GPT-4,HumanEval,67.0,2024-01-01,OpenAI
+Claude 3 Opus,MMLU,86.8,2024-03-01,Anthropic
