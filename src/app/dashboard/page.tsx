@@ -1,3 +1,6 @@
+"use client";
+
+import { useState, useEffect } from "react";
 import { getModels, getBenchmarks, getBenchmarkResults, getOrganizations, getCategories } from "@/lib/supabase-queries";
 import { ModelsTable } from "@/components/dashboard/ModelsTable";
 import { BenchmarksTable } from "@/components/dashboard/BenchmarksTable";
@@ -9,6 +12,10 @@ import { BarChart } from "@/components/visualization/BarChart";
 import { ChartContainer } from "@/components/visualization/ChartContainer";
 import { RepositoryMetrics } from "@/components/github/RepositoryMetrics";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
+import { ConnectionStatus } from "@/components/ui/ConnectionStatus";
+import { useModelsRealtime } from "@/hooks/useModelsRealtime";
+import { useBenchmarksRealtime } from "@/hooks/useBenchmarksRealtime";
+import type { Model, Benchmark, BenchmarkResult, Organization, Category } from "@/types";
 import {
   transformDataForLineChart,
   transformDataForBarChart,
@@ -16,14 +23,76 @@ import {
   getTopModelsByScore,
 } from "@/lib/chart-utils";
 
-export default async function DashboardPage() {
-  const [models, benchmarks, results, organizations, categories] = await Promise.all([
-    getModels(),
-    getBenchmarks(),
-    getBenchmarkResults(),
-    getOrganizations(),
-    getCategories(),
-  ]);
+export default function DashboardPage() {
+  const [models, setModels] = useState<Model[]>([]);
+  const [benchmarks, setBenchmarks] = useState<Benchmark[]>([]);
+  const [results, setResults] = useState<BenchmarkResult[]>([]);
+  const [organizations, setOrganizations] = useState<Organization[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const [modelsData, benchmarksData, resultsData, organizationsData, categoriesData] = await Promise.all([
+          getModels(),
+          getBenchmarks(),
+          getBenchmarkResults(),
+          getOrganizations(),
+          getCategories(),
+        ]);
+        setModels(modelsData);
+        setBenchmarks(benchmarksData);
+        setResults(resultsData);
+        setOrganizations(organizationsData);
+        setCategories(categoriesData);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchData();
+  }, []);
+
+  const modelsRealtime = useModelsRealtime({
+    onModelChange: () => {
+      // Refresh data when models change
+      fetchData();
+    },
+  });
+
+  const benchmarksRealtime = useBenchmarksRealtime({
+    onBenchmarkChange: () => {
+      // Refresh data when benchmarks change
+      fetchData();
+    },
+  });
+
+  const handleRefresh = () => {
+    modelsRealtime.reconnect();
+    benchmarksRealtime.reconnect();
+  };
+
+  const fetchData = async () => {
+    try {
+      const [modelsData, benchmarksData, resultsData, organizationsData, categoriesData] = await Promise.all([
+        getModels(),
+        getBenchmarks(),
+        getBenchmarkResults(),
+        getOrganizations(),
+        getCategories(),
+      ]);
+      setModels(modelsData);
+      setBenchmarks(benchmarksData);
+      setResults(resultsData);
+      setOrganizations(organizationsData);
+      setCategories(categoriesData);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
 
   const topModels = getTopModelsByScore(results, 5);
   const lineChartData = transformDataForLineChart(results, topModels);
@@ -38,6 +107,17 @@ export default async function DashboardPage() {
   const modelNames = topModels.map((m) => m.name);
   const categoryNames = categories.map((cat) => cat.name);
 
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 dark:border-gray-100 mx-auto"></div>
+          <p className="mt-4 text-gray-600 dark:text-gray-400">Loading dashboard...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -48,7 +128,14 @@ export default async function DashboardPage() {
               View and compare AI model benchmark performance metrics
             </p>
           </div>
-          <ThemeToggle />
+          <div className="flex items-center gap-4">
+            <ConnectionStatus
+              isConnected={modelsRealtime.isConnected && benchmarksRealtime.isConnected}
+              error={modelsRealtime.error || benchmarksRealtime.error}
+              onReconnect={handleRefresh}
+            />
+            <ThemeToggle />
+          </div>
         </div>
 
         <div className="space-y-8">
