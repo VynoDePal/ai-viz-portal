@@ -2,6 +2,7 @@ import { getModels, getBenchmarks, getBenchmarkResults, getOrganizations, getCat
 import { ModelsTable } from "@/components/dashboard/ModelsTable";
 import { BenchmarksTable } from "@/components/dashboard/BenchmarksTable";
 import { ResultsTable } from "@/components/dashboard/ResultsTable";
+import { AdvancedFilters } from "@/components/dashboard/AdvancedFilters";
 import { LineChart } from "@/components/visualization/LineChart";
 import { BarChart } from "@/components/visualization/BarChart";
 import { ChartContainer } from "@/components/visualization/ChartContainer";
@@ -33,6 +34,7 @@ export default async function DashboardPage() {
     : [];
 
   const modelNames = topModels.map((m) => m.name);
+  const categoryNames = categories.map((cat) => cat.name);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -45,6 +47,18 @@ export default async function DashboardPage() {
         </div>
 
         <div className="space-y-8">
+          <section>
+            <h2 className="text-2xl font-semibold text-gray-900 mb-4">Advanced Filters</h2>
+            <AdvancedFilters
+              organizations={organizationNames}
+              categories={categoryNames}
+              onFilterChange={(filters) => {
+                // Handle filter changes - this would typically filter the data
+                console.log("Filters changed:", filters);
+              }}
+            />
+          </section>
+
           <section>
             <h2 className="text-2xl font-semibold text-gray-900 mb-4">GitHub Metrics</h2>
             <RepositoryMetrics owner="VynoDePal" repo="ai-viz-portal" />
