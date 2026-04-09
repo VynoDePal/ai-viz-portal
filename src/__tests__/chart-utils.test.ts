@@ -52,7 +52,7 @@ describe("Chart Utils", () => {
           id: "1",
           model_id: "m1",
           benchmark_id: "b1",
-          score: null,
+          score: undefined,
           created_at: "2024-01-01T00:00:00Z",
           updated_at: "2024-01-01T00:00:00Z",
           model: { name: "GPT-4", id: "m1" } as any,
