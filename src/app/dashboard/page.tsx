@@ -13,6 +13,7 @@ import { ChartContainer } from "@/components/visualization/ChartContainer";
 import { RepositoryMetrics } from "@/components/github/RepositoryMetrics";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { ConnectionStatus } from "@/components/ui/ConnectionStatus";
+import { ExportButton } from "@/components/ui/ExportButton";
 import { useModelsRealtime } from "@/hooks/useModelsRealtime";
 import { useBenchmarksRealtime } from "@/hooks/useBenchmarksRealtime";
 import type { Model, Benchmark, BenchmarkResult, Organization, Category } from "@/types";
@@ -184,21 +185,39 @@ export default function DashboardPage() {
           </section>
 
           <section>
-            <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-4">Models</h2>
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">Models</h2>
+              <div className="flex gap-2">
+                <ExportButton table="models" format="csv" label="Export CSV" />
+                <ExportButton table="models" format="json" label="Export JSON" />
+              </div>
+            </div>
             <div className="bg-white dark:bg-gray-800 shadow rounded-lg p-6 transition-colors">
               <ModelsTable models={models} organizations={organizations} categories={categories} />
             </div>
           </section>
 
           <section>
-            <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-4">Benchmarks</h2>
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">Benchmarks</h2>
+              <div className="flex gap-2">
+                <ExportButton table="benchmarks" format="csv" label="Export CSV" />
+                <ExportButton table="benchmarks" format="json" label="Export JSON" />
+              </div>
+            </div>
             <div className="bg-white dark:bg-gray-800 shadow rounded-lg p-6 transition-colors">
               <BenchmarksTable benchmarks={benchmarks} />
             </div>
           </section>
 
           <section>
-            <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-4">Benchmark Results</h2>
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">Benchmark Results</h2>
+              <div className="flex gap-2">
+                <ExportButton table="benchmark_results" format="csv" label="Export CSV" />
+                <ExportButton table="benchmark_results" format="json" label="Export JSON" />
+              </div>
+            </div>
             <div className="bg-white dark:bg-gray-800 shadow rounded-lg p-6 transition-colors">
               <ResultsTable results={results} />
             </div>
