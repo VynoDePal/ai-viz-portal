@@ -92,6 +92,16 @@ export function ModelsTable({ models, organizations, categories }: ModelsTablePr
       header: "Release Date",
       render: (value: string) => value ? new Date(value).toLocaleDateString() : "-",
     },
+    {
+      key: "github_stars" as keyof Model,
+      header: "GitHub Stars",
+      render: (value: number) => value?.toLocaleString() || "-",
+    },
+    {
+      key: "hf_downloads" as keyof Model,
+      header: "HF Downloads",
+      render: (value: number) => value?.toLocaleString() || "-",
+    },
   ];
 
   const organizationOptions = organizations.map((org) => ({

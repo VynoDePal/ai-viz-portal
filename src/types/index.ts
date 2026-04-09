@@ -27,6 +27,11 @@ export interface Model {
   description?: string;
   github_url?: string;
   huggingface_url?: string;
+  github_repo?: string;
+  huggingface_model?: string;
+  github_stars?: number;
+  hf_downloads?: number;
+  metrics_last_updated?: string;
   created_at: string;
   updated_at: string;
   organization?: Organization;
