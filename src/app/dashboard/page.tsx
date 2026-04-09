@@ -5,6 +5,7 @@ import { ResultsTable } from "@/components/dashboard/ResultsTable";
 import { LineChart } from "@/components/visualization/LineChart";
 import { BarChart } from "@/components/visualization/BarChart";
 import { ChartContainer } from "@/components/visualization/ChartContainer";
+import { RepositoryMetrics } from "@/components/github/RepositoryMetrics";
 import {
   transformDataForLineChart,
   transformDataForBarChart,
@@ -44,6 +45,11 @@ export default async function DashboardPage() {
         </div>
 
         <div className="space-y-8">
+          <section>
+            <h2 className="text-2xl font-semibold text-gray-900 mb-4">GitHub Metrics</h2>
+            <RepositoryMetrics owner="VynoDePal" repo="ai-viz-portal" />
+          </section>
+
           <section>
             <h2 className="text-2xl font-semibold text-gray-900 mb-4">Visualizations</h2>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
