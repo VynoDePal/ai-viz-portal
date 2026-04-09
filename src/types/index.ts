@@ -1,23 +1,66 @@
-// Placeholder for TypeScript type definitions
-// This will be expanded as the project grows
+// Database type definitions matching the Supabase schema
+
+export interface Organization {
+  id: string;
+  name: string;
+  website?: string;
+  description?: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface Category {
+  id: string;
+  name: string;
+  description?: string;
+  created_at: string;
+  updated_at: string;
+}
 
 export interface Model {
   id: string;
   name: string;
-  organization: string;
-  parameters: number;
-  releaseDate: string;
+  organization_id?: string;
+  category_id?: string;
+  parameters?: number;
+  release_date?: string;
+  description?: string;
+  github_url?: string;
+  huggingface_url?: string;
+  created_at: string;
+  updated_at: string;
+  organization?: Organization;
+  category?: Category;
 }
 
 export interface Benchmark {
   id: string;
   name: string;
-  description: string;
+  description?: string;
+  type?: string;
+  unit?: string;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface BenchmarkResult {
   id: string;
-  modelId: string;
-  benchmarkId: string;
-  score: number;
+  model_id: string;
+  benchmark_id: string;
+  score?: number;
+  date_recorded?: string;
+  source?: string;
+  created_at: string;
+  updated_at: string;
+  model?: Model;
+  benchmark?: Benchmark;
+}
+
+export interface UserProfile {
+  id: string;
+  user_id: string;
+  full_name?: string;
+  avatar_url?: string;
+  created_at: string;
+  updated_at: string;
 }

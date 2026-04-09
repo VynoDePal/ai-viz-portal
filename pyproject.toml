@@ -1,0 +1,31 @@
+[tool.ruff]
+# Set the maximum line length to 100.
+line-length = 100
+
+# Target Python version.
+target-version = "py311"
+
+[tool.ruff.lint]
+# Enable pycodestyle (E, W), Pyflakes (F), and isort (I) by default.
+select = ["E", "F", "I"]
+
+# Ignore specific rules.
+ignore = []
+
+# Allow autofix for all enabled rules (when `--fix` is provided).
+fixable = ["ALL"]
+unfixable = []
+
+[tool.ruff.format]
+# Use double quotes for strings.
+quote-style = "double"
+
+# Indent with spaces, not tabs.
+indent-style = "space"
+
+# Respect magic trailing commas.
+skip-magic-trailing-comma = false
+
+[tool.ruff.lint.isort]
+# Use a single line for imports.
+lines-after-imports = 2

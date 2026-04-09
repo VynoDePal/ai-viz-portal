@@ -1,36 +1,102 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AI Viz Portal
+
+A modern platform for visualizing and comparing AI model performance metrics with real-time updates.
+
+## Technology Stack
+
+- **Frontend**: Next.js 16.2.3 with App Router, React 19.2.4
+- **Styling**: Tailwind CSS 4
+- **Visualization**: Recharts
+- **Backend**: Supabase (PostgreSQL, Auth, Realtime, Storage, Edge Functions)
+- **Language**: TypeScript 5
+- **Code Quality**: ESLint, Prettier, Ruff
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
+- Node.js 11.9.0 or higher
+- npm, yarn, pnpm, or bun
+- Supabase account
+
+### Installation
+
+1. Clone the repository:
+```bash
+git clone https://github.com/VynoDePal/ai-viz-portal.git
+cd ai-viz-portal
+```
+
+2. Install dependencies:
+```bash
+npm install
+```
+
+3. Configure environment variables:
+```bash
+cp .env.example .env.local
+```
+
+Update `.env.local` with your Supabase credentials:
+```
+NEXT_PUBLIC_SUPABASE_URL=your-project-url
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=your-publishable-key
+```
+
+4. Run the development server:
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Authentication
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The project includes authentication pages:
+- `/auth/login` - Sign in with email/password
+- `/auth/signup` - Create a new account
 
-## Learn More
+## Development
 
-To learn more about Next.js, take a look at the following resources:
+### Code Quality
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Run linting:
+```bash
+npm run lint
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Format code:
+```bash
+npm run format
+```
 
-## Deploy on Vercel
+Check formatting:
+```bash
+npm run format:check
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Build
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+npm run build
+```
+
+## Project Structure
+
+```
+src/
+├── app/              # Next.js App Router pages
+│   ├── auth/         # Authentication pages
+│   └── ...
+├── components/      # React components
+│   ├── ui/          # UI components
+│   ├── dashboard/   # Dashboard components
+│   └── visualization/ # Visualization components
+├── lib/             # Utilities and configurations
+├── types/           # TypeScript type definitions
+└── utils/           # Helper functions
+```
+
+## License
+
+MIT
