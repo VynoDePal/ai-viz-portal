@@ -55,6 +55,10 @@ export interface BenchmarkResult {
   score?: number;
   date_recorded?: string;
   source?: string;
+  api_cost_per_1k_tokens?: number;
+  latency_ms?: number;
+  throughput_rps?: number;
+  cost_efficiency_score?: number;
   created_at: string;
   updated_at: string;
   model?: Model;

@@ -79,6 +79,26 @@ export function ResultsTable({ results }: ResultsTableProps) {
       header: "Source",
       render: (value: string) => value || "-",
     },
+    {
+      key: "api_cost_per_1k_tokens" as keyof BenchmarkResult,
+      header: "Cost/1K Tokens ($)",
+      render: (value: number) => value?.toFixed(4) || "-",
+    },
+    {
+      key: "latency_ms" as keyof BenchmarkResult,
+      header: "Latency (ms)",
+      render: (value: number) => value?.toLocaleString() || "-",
+    },
+    {
+      key: "throughput_rps" as keyof BenchmarkResult,
+      header: "Throughput (RPS)",
+      render: (value: number) => value?.toFixed(2) || "-",
+    },
+    {
+      key: "cost_efficiency_score" as keyof BenchmarkResult,
+      header: "Cost Efficiency",
+      render: (value: number) => value?.toFixed(4) || "-",
+    },
   ];
 
   return (
