@@ -54,6 +54,7 @@ export function NotificationBell() {
 }
 
 import { Notification } from "@/contexts/NotificationContext";
+import { VirtualizedList } from "@/components/ui/VirtualizedList";
 
 function NotificationPanel({ onClose }: { onClose: () => void }) {
   const { notifications, markAsRead, deleteNotification, isLoading } = useNotifications();
@@ -75,10 +76,10 @@ function NotificationPanel({ onClose }: { onClose: () => void }) {
   }
 
   return (
-    <div className="max-h-96 overflow-y-auto">
-      {notifications.map((notification) => (
+    <VirtualizedList
+      data={notifications}
+      renderItem={(notification) => (
         <div
-          key={notification.id}
           className={`p-4 border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-750 cursor-pointer ${
             !notification.read ? "bg-blue-50 dark:bg-blue-900/20" : ""
           }`}
@@ -118,7 +119,10 @@ function NotificationPanel({ onClose }: { onClose: () => void }) {
             </button>
           </div>
         </div>
-      ))}
-    </div>
+      )}
+      estimateSize={() => 120}
+      height="400px"
+      emptyMessage="No notifications"
+    />
   );
 }
