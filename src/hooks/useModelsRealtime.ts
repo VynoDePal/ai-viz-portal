@@ -1,25 +1,33 @@
 "use client";
 
 import { useCallback } from "react";
-import { useRealtimeSubscription } from "./useRealtimeSubscription";
+import { useRealtimeSubscriptionAdvanced } from "./useRealtimeSubscriptionAdvanced";
 import type { Model } from "@/types";
 
 interface UseModelsRealtimeOptions {
   onModelChange?: (models: Model[]) => void;
   enabled?: boolean;
+  batchDelay?: number;
+  enableReconnection?: boolean;
+  enableHealthCheck?: boolean;
 }
 
 export function useModelsRealtime({
   onModelChange,
   enabled = true,
+  batchDelay = 100,
+  enableReconnection = true,
+  enableHealthCheck = true,
 }: UseModelsRealtimeOptions) {
-  const { isConnected, error, reconnect } = useRealtimeSubscription({
+  const { isConnected, error, reconnect, analytics } = useRealtimeSubscriptionAdvanced({
     table: "models",
     event: "*",
     enabled,
+    batchDelay,
+    enableReconnection,
+    enableHealthCheck,
     onInsert: (payload) => {
       console.log("New model inserted:", payload);
-      // Trigger refresh or update state
       onModelChange?.([]);
     },
     onUpdate: (payload) => {
@@ -36,5 +44,6 @@ export function useModelsRealtime({
     isConnected,
     error,
     reconnect,
+    analytics,
   };
 }
