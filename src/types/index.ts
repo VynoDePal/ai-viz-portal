@@ -32,6 +32,11 @@ export interface Model {
   github_stars?: number;
   hf_downloads?: number;
   metrics_last_updated?: string;
+  intelligence_score?: number;
+  speed_score?: number;
+  value_score?: number;
+  overall_score?: number;
+  scores_last_updated?: string;
   created_at: string;
   updated_at: string;
   organization?: Organization;

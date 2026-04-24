@@ -102,6 +102,26 @@ export function ModelsTable({ models, organizations, categories }: ModelsTablePr
       header: "HF Downloads",
       render: (value: number) => value?.toLocaleString() || "-",
     },
+    {
+      key: "intelligence_score" as keyof Model,
+      header: "Intelligence",
+      render: (value: number) => value?.toFixed(1) || "-",
+    },
+    {
+      key: "speed_score" as keyof Model,
+      header: "Speed",
+      render: (value: number) => value?.toFixed(1) || "-",
+    },
+    {
+      key: "value_score" as keyof Model,
+      header: "Value",
+      render: (value: number) => value?.toFixed(1) || "-",
+    },
+    {
+      key: "overall_score" as keyof Model,
+      header: "Overall",
+      render: (value: number) => value?.toFixed(1) || "-",
+    },
   ];
 
   const organizationOptions = organizations.map((org) => ({
