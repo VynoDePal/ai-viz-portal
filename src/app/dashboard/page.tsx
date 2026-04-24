@@ -6,6 +6,7 @@ import { ModelsTable } from "@/components/dashboard/ModelsTable";
 import { BenchmarksTable } from "@/components/dashboard/BenchmarksTable";
 import { ResultsTable } from "@/components/dashboard/ResultsTable";
 import { AdvancedFilters } from "@/components/dashboard/AdvancedFilters";
+import { Leaderboard } from "@/components/dashboard/Leaderboard";
 import { ModelComparison } from "@/components/comparison/ModelComparison";
 import { LineChart } from "@/components/visualization/LineChart";
 import { BarChart } from "@/components/visualization/BarChart";
@@ -150,6 +151,13 @@ export default function DashboardPage() {
                 console.log("Filters changed:", filters);
               }}
             />
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100 mb-4">Interactive Leaderboard</h2>
+            <div className="bg-white dark:bg-gray-800 shadow rounded-lg p-6 transition-colors">
+              <Leaderboard models={models} organizations={organizations} categories={categories} />
+            </div>
           </section>
 
           <section>
