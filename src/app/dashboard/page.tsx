@@ -15,6 +15,7 @@ import { RepositoryMetrics } from "@/components/github/RepositoryMetrics";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { ConnectionStatus } from "@/components/ui/ConnectionStatus";
 import { ExportButton } from "@/components/ui/ExportButton";
+import { NotificationBell } from "@/components/ui/NotificationBell";
 import { useModelsRealtime } from "@/hooks/useModelsRealtime";
 import { useBenchmarksRealtime } from "@/hooks/useBenchmarksRealtime";
 import type { Model, Benchmark, BenchmarkResult, Organization, Category } from "@/types";
@@ -136,6 +137,7 @@ export default function DashboardPage() {
               error={modelsRealtime.error || benchmarksRealtime.error}
               onReconnect={handleRefresh}
             />
+            <NotificationBell />
             <ThemeToggle />
           </div>
         </div>
